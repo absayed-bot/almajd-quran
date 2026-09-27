@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="مكتب المجد لتحفيظ القرآن الكريم أونلاين — احفظ القرآن من أي مكان، بوقت مرن، وبخطة حفظ تناسب مستواك وقدرتك، مع متابعة ومنهج واضح.">
+<meta name="theme-color" content="#0E3B36">
+<title>مكتب المجد لتحفيظ القرآن الكريم | التحفيظ أونلاين</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#F7F3E9;
+  --surface:#FFFFFF;
+  --ink:#18221F;
+  --muted:#5B6661;
+  --green:#0E3B36;
+  --green2:#145C52;
+  --green3:#1D786C;
+  --gold:#B78A2D;
+  --gold2:#E7D3A1;
+  --line:#DDD4C0;
+  --shadow:0 18px 50px rgba(14,59,54,.10);
+  --radius:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Tajawal",Arial,sans-serif;line-height:1.8;
+}
+a{color:inherit}
+button,input,select,textarea{font:inherit}
+.wrap{width:min(1120px,calc(100% - 36px));margin:auto}
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(247,243,233,.94);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;color:var(--green)}
+.brand-mark{
+  width:42px;height:42px;border-radius:12px;background:var(--green);color:#fff;
+  display:grid;place-items:center;font-family:"Amiri";font-size:24px;
+}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:0;border-radius:999px;padding:13px 24px;font-weight:900;
+  text-decoration:none;cursor:pointer;transition:.2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--green);color:#fff}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-outline{border:1.5px solid var(--green);color:var(--green);background:transparent}
+.hero{
+  position:relative;overflow:hidden;padding:78px 0 70px;
+  background:
+    radial-gradient(circle at 85% 15%,rgba(183,138,45,.15),transparent 30%),
+    radial-gradient(circle at 10% 80%,rgba(29,120,108,.10),transparent 32%),
+    var(--bg);
+}
+.hero:after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.25;
+  background-image:linear-gradient(135deg,transparent 24%,rgba(183,138,45,.25) 25%,transparent 26%,transparent 74%,rgba(14,59,54,.18) 75%,transparent 76%);
+  background-size:72px 72px;
+}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--gold2);
+  color:var(--green);padding:7px 13px;border-radius:999px;font-weight:800;font-size:.9rem;
+}
+h1,h2,h3{font-family:"Amiri","Tajawal",serif}
+h1{font-size:clamp(2.25rem,5vw,4.3rem);line-height:1.18;color:var(--green);margin:18px 0}
+.lead{font-size:1.13rem;color:var(--muted);max-width:650px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:35px}
+.stat{
+  background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 18px;min-width:130px;
+  box-shadow:0 8px 25px rgba(14,59,54,.05)
+}
+.stat strong{display:block;color:var(--green);font-size:1.35rem}
+.stat span{font-size:.86rem;color:var(--muted)}
+.hero-card{
+  background:#fff;border:1px solid var(--line);border-radius:28px;padding:28px;
+  box-shadow:var(--shadow);position:relative
+}
+.hero-card .quran{font-size:72px;text-align:center;margin:5px 0 10px}
+.hero-card h2{text-align:center;color:var(--green);font-size:1.8rem;margin:0}
+.hero-card p{text-align:center;color:var(--muted);margin:8px 0 20px}
+.checks{display:grid;gap:11px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:13px;background:#F8F6EF}
+.check b{color:var(--gold)}
+section{padding:78px 0}
+.section-head{text-align:center;max-width:720px;margin:0 auto 38px}
+.section-head h2{font-size:clamp(1.8rem,3.4vw,2.7rem);color:var(--green);margin:0 0 8px}
+.section-head p{margin:0;color:var(--muted)}
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.feature{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:25px;
+  box-shadow:0 8px 30px rgba(14,59,54,.05)
+}
+.icon{
+  width:52px;height:52px;border-radius:15px;background:var(--green);color:#fff;
+  display:grid;place-items:center;font-size:24px;margin-bottom:15px
+}
+.feature h3{font-family:"Tajawal";font-size:1.08rem;color:var(--green);margin:0 0 7px}
+.feature p{font-size:.93rem;color:var(--muted);margin:0}
+.highlight{
+  background:var(--green);color:#fff;border-radius:28px;padding:48px;
+  display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center
+}
+.highlight h2{font-size:2.5rem;margin:0 0 10px}
+.highlight p{color:#E8F0ED;margin:0}
+.pills{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pill{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);padding:14px;border-radius:14px}
+.pill strong{display:block;color:#F3D58B}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.step{background:#fff;border:1px solid var(--line);border-radius:20px;padding:25px}
+.num{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#fff;font-weight:900}
+.step h3{font-family:"Tajawal";color:var(--green);margin:13px 0 5px}
+.step p{margin:0;color:var(--muted);font-size:.94rem}
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.price-card{
+  background:#fff;border:1px solid var(--line);border-radius:22px;padding:27px;position:relative
+}
+.price-card.featured{border:2px solid var(--gold);box-shadow:var(--shadow)}
+.tag{position:absolute;top:18px;left:18px;background:var(--gold);color:#fff;border-radius:999px;padding:5px 10px;font-size:.78rem;font-weight:900}
+.price-card h3{font-family:"Tajawal";color:var(--green);margin:0 0 8px}
+.price{font-family:"Amiri";font-size:2.4rem;color:var(--green);font-weight:700}
+.price small{font-family:"Tajawal";font-size:.9rem;color:var(--muted)}
+.price-card ul{list-style:none;padding:0;margin:18px 0 0;color:var(--muted)}
+.price-card li{padding:6px 0}
+.price-card li:before{content:"✓";color:var(--gold);font-weight:900;margin-left:7px}
+#apply{background:var(--green);color:#fff}
+#apply .section-head h2,#apply .section-head p{color:#fff}
+.form-box{background:#fff;color:var(--ink);border-radius:25px;padding:30px;box-shadow:var(--shadow)}
+form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label{font-weight:800;font-size:.9rem}
+input,select,textarea{
+  width:100%;border:1px solid var(--line);border-radius:11px;padding:12px 13px;
+  background:#FBFAF6;color:var(--ink);outline:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--green3);box-shadow:0 0 0 3px rgba(29,120,108,.1)}
+textarea{min-height:100px;resize:vertical}
+.submit{grid-column:1/-1;display:flex;align-items:center;gap:15px;flex-wrap:wrap}
+.submit button{background:var(--gold);color:#fff;border:0;border-radius:999px;padding:14px 30px;font-weight:900;cursor:pointer}
+.note{color:var(--muted);font-size:.85rem}
+.confirm{display:none;text-align:center;padding:30px}
+.confirm h3{color:var(--green);font-size:1.7rem}
+footer{background:#092D29;color:#DCE9E5;padding:30px 0}
+.footer-grid{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-small{opacity:.8;font-size:.85rem}
+.whatsapp{
+  position:fixed;bottom:20px;left:20px;z-index:60;background:#198754;color:#fff;
+  width:58px;height:58px;border-radius:50%;display:grid;place-items:center;
+  text-decoration:none;font-size:25px;box-shadow:0 10px 30px rgba(0,0,0,.2)
+}
+@media(max-width:900px){
+  .hero-grid,.highlight{grid-template-columns:1fr}
+  .features{grid-template-columns:1fr 1fr}
+  .pricing{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .wrap{width:min(100% - 24px,1120px)}
+  .nav{min-height:64px}
+  .brand{font-size:.88rem}
+  .brand-mark{width:36px;height:36px}
+  .nav .btn{padding:9px 15px;font-size:.85rem}
+  .hero{padding:52px 0}
+  h1{font-size:2.25rem}
+  .lead{font-size:1rem}
+  .stats{display:grid;grid-template-columns:1fr 1fr}
+  .stat{min-width:0}
+  section{padding:55px 0}
+  .features,.steps{grid-template-columns:1fr}
+  .highlight{padding:30px 22px}
+  .highlight h2{font-size:2rem}
+  .pills{grid-template-columns:1fr}
+  form{grid-template-columns:1fr}
+  .field.full,.submit{grid-column:auto}
+  .form-box{padding:20px 15px}
+  .whatsapp{bottom:15px;left:15px}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="wrap nav">
+    <div class="brand"><span class="brand-mark">م</span> مكتب المجد لتحفيظ القرآن الكريم</div>
+    <a class="btn btn-primary" href="#apply">سجّل الآن</a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="badge">🕌 التقديم مفتوح للتحفيظ أونلاين</span>
+      <h1>احفظ القرآن الكريم من أي مكان… وبالطريقة التي تناسبك</h1>
+      <p class="lead">
+        ابدأ رحلتك مع القرآن الكريم مع <strong>مكتب المجد لتحفيظ القرآن الكريم</strong>.
+        اختر الوقت المناسب لك، ونظام الحفظ الذي يناسب مستواك، والقدر الذي تستطيع الالتزام به،
+        مع متابعة مستمرة ومنهج واضح يساعدك على الحفظ والمراجعة والإتقان.
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#apply">ابدأ التسجيل الآن ←</a>
+        <a class="btn btn-outline" href="#why">لماذا المجد؟</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>6 سنوات</strong><span>من العمل والنجاحات</span></div>
+        <div class="stat"><strong>أونلاين</strong><span>من أي مكان</span></div>
+        <div class="stat"><strong>مرن</strong><span>في الوقت والقدر</span></div>
+        <div class="stat"><strong>بمنهج</strong><span>حفظ ومراجعة ومتابعة</span></div>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="quran">📖</div>
+      <h2>رحلتك مع القرآن تبدأ بخطوة</h2>
+      <p>لا تنتظر الوقت المثالي… اصنع نظامًا يناسب وقتك.</p>
+      <div class="checks">
+        <div class="check"><b>✓</b><span>اختر <strong>الوقت المناسب</strong> لجدولك.</span></div>
+        <div class="check"><b>✓</b><span>اختر <strong>نظام الحفظ</strong> المناسب لمستواك.</span></div>
+        <div class="check"><b>✓</b><span>احفظ <strong>القدر المناسب</strong> لقدرتك اليومية.</span></div>
+        <div class="check"><b>✓</b><span>تابع تقدمك من <strong>أي مكان</strong>.</span></div>
+        <div class="check"><b>✓</b><span>حفظ ومراجعة وتجويد ضمن <strong>منهج واضح</strong>.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>لماذا التحفيظ أونلاين مع مكتب المجد؟</h2>
+      <p>نحوّل ظروفك ووقتك إلى جزء من الخطة بدل أن تكون عائقًا أمام حفظ كتاب الله.</p>
+    </div>
+    <div class="features">
+      <div class="feature"><div class="icon">🕐</div><h3>وقت يناسبك</h3><p>اختر المواعيد التي تتوافق مع عملك أو دراستك والتزاماتك اليومية.</p></div>
+      <div class="feature"><div class="icon">🎯</div><h3>نظام حفظ مناسب لك</h3><p>ابدأ من مستواك الحالي، واختر خطة تناسب هدفك وقدرتك على الاستمرار.</p></div>
+      <div class="feature"><div class="icon">📚</div><h3>قدر حفظ يناسب قدرتك</h3><p>ليس المطلوب أن تحفظ كثيرًا فقط؛ المهم أن تحفظ وتراجع وتستمر بإتقان.</p></div>
+      <div class="feature"><div class="icon">🌍</div><h3>احفظ من أي مكان</h3><p>حصص مباشرة أونلاين تتيح لك متابعة رحلتك أينما كنت داخل مصر أو خارجها.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="highlight">
+      <div>
+        <h2>6 سنوات من العطاء والنجاحات</h2>
+        <p>
+          بفضل الله، واصل مكتب المجد عمله في خدمة كتاب الله على مدار ست سنوات،
+          ونسعى في نشاط التحفيظ الأونلاين إلى إتاحة التجربة نفسها بصورة أكثر مرونة
+          لتصل إلى الطلاب والطالبات في أماكن مختلفة.
+        </p>
+      </div>
+      <div class="pills">
+        <div class="pill"><strong>✓ خبرة ممتدة</strong><span>سنوات من العمل في مجال تحفيظ القرآن.</span></div>
+        <div class="pill"><strong>✓ إشراف متخصص</strong><span>متابعة للطالب وخطة واضحة لرحلته.</span></div>
+        <div class="pill"><strong>✓ منهج منظم</strong><span>حفظ + مراجعة + تصحيح وتجويد.</span></div>
+        <div class="pill"><strong>✓ مرونة حقيقية</strong><span>وقت وقدر حفظ يناسب ظروفك.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>تحفظ بمنهج… لا بمجرد حصص</h2>
+      <p>هدفنا أن يكون لديك مسار واضح تستطيع الاستمرار عليه ومراجعة ما حفظته باستمرار.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h3>تحديد المستوى</h3><p>نتعرف على مستواك الحالي وما تحفظه بالفعل، ثم نحدد نقطة البداية.</p></div>
+      <div class="step"><div class="num">2</div><h3>اختيار الخطة</h3><p>نحدد الوقت وعدد الحصص والقدر المناسب من الحفظ وفق ظروفك وهدفك.</p></div>
+      <div class="step"><div class="num">3</div><h3>حفظ ومراجعة</h3><p>تسير في برنامج منتظم يجمع بين الجديد والمراجعة وتصحيح التلاوة.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>اختر مستوى المعلّم المناسب</h2>
+      <p>يمكنك اختيار المستوى الذي يناسب احتياجك وميزانيتك وفق الخيارات المتاحة بالمكتب.</p>
+    </div>
+    <div class="pricing">
+      <div class="price-card">
+        <h3>معلّم متوسط الخبرة</h3>
+        <div class="price">40 <small>جنيهًا / الحصة</small></div>
+        <ul>
+          <li>مناسب للمبتدئين وصغار السن</li>
+          <li>متابعة هادئة بخطوات متدرجة</li>
+          <li>تثبيت مخارج الحروف والأحكام الأساسية</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <h3>معلّم خبير</h3>
+        <div class="price">70 <small>جنيهًا / الحصة</small></div>
+        <ul>
+          <li>لمن أتم حفظ أجزاء ويريد التثبيت</li>
+          <li>متابعة أكثر دقة</li>
+          <li>تصحيح مستمر للتلاوة والأحكام</li>
+        </ul>
+      </div>
+      <div class="price-card featured">
+        <span class="tag">مستوى احترافي</span>
+        <h3>معلّم محترف ومُجاز</h3>
+        <div class="price">100 <small>جنيه / الحصة</small></div>
+        <ul>
+          <li>لطلاب الإتقان والراغبين في الإجازة</li>
+          <li>إجازة سند وخبرة طويلة في التلقين</li>
+          <li>خطة مكثفة للحفظ والمراجعة</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="apply">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>ابدأ الآن — سجّل بياناتك</h2>
+      <p>املأ النموذج، وسيتواصل معك فريق التسجيل لتحديد التفاصيل المناسبة لك.</p>
+    </div>
+
+    <div class="form-box">
+      <form id="applyForm" onsubmit="return handleSubmit(event)">
+        <div class="field"><label for="name">الاسم بالكامل</label><input id="name" name="name" required></div>
+        <div class="field"><label for="age">العمر</label><input id="age" name="age" type="number" min="4" max="90" required></div>
+        <div class="field"><label for="country">الدولة / المدينة</label><input id="country" name="country" required></div>
+        <div class="field"><label for="phone">رقم الواتساب</label><input id="phone" name="phone" type="tel" required></div>
+
+        <div class="field">
+          <label for="level">مستواك الحالي في الحفظ</label>
+          <select id="level" name="currentLevel" required>
+            <option value="" disabled selected>اختر مستواك</option>
+            <option>لا أحفظ شيئًا بعد</option>
+            <option>أحفظ أجزاء قليلة</option>
+            <option>حافظ لنصف القرآن أو أكثر</option>
+            <option>حافظ كامل ويريد تثبيت وإجازة</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="teacher">مستوى المعلّم المطلوب</label>
+          <select id="teacher" name="teacherTier" required>
+            <option value="" disabled selected>اختر مستوى المعلّم</option>
+            <option value="متوسط الخبرة - 40 جنيه للحصة">متوسط الخبرة — 40 جنيهًا للحصة</option>
+            <option value="خبير - 70 جنيه للحصة">خبير — 70 جنيهًا للحصة</option>
+            <option value="محترف - 100 جنيه للحصة">محترف — 100 جنيه للحصة</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="sessions">عدد الحصص أسبوعيًا</label>
+          <select id="sessions" name="sessionsPerWeek" required>
+            <option value="" disabled selected>اختر العدد</option>
+            <option>حصتان</option><option>3 حصص</option><option>4 حصص</option><option>5 حصص أو أكثر</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="time">الوقت المفضل</label>
+          <input id="time" name="preferredTime" placeholder="مثال: مساءً بعد صلاة العشاء" required>
+        </div>
+
+        <div class="field full">
+          <label for="notes">ملاحظات إضافية</label>
+          <textarea id="notes" name="notes" placeholder="مثلاً: أريد نظامًا خفيفًا، أفضّل معلمًا معينًا، أريد التركيز على المراجعة..."></textarea>
+        </div>
+
+        <div class="submit">
+          <button id="submitBtn" type="submit">إرسال طلب التقديم</button>
+          <span class="note">بياناتك تُرسل عبر نموذج التسجيل المتصل بالمكتب.</span>
+        </div>
+      </form>
+
+      <div class="confirm" id="confirm">
+        <div style="font-size:48px">✅</div>
+        <h3>تم استلام طلبك بنجاح</h3>
+        <p>شكرًا لك. سيتواصل معك فريق التسجيل بعد مراجعة بياناتك.</p>
+        <a class="btn btn-primary" href="#apply" onclick="location.reload()">إرسال طلب آخر</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div><strong>مكتب المجد لتحفيظ القرآن الكريم</strong><div class="footer-small">نشاط التحفيظ الأونلاين</div></div>
+    <div class="footer-small">معتمد من الأزهر الشريف • حفظ ومراجعة ومنهج منظم</div>
+  </div>
+</footer>
+
+<!-- استبدل الرقم الموجود في الرابط برقم واتساب المكتب إذا أردت تفعيل زر واتساب -->
+<a class="whatsapp" href="https://wa.me/201000000000" target="_blank" rel="noopener" aria-label="واتساب">◉</a>
+
+<script>
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/meaoryqq";
+
+async function handleSubmit(e){
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById("submitBtn");
+  const old = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "جارٍ إرسال الطلب...";
+
+  try{
+    const res = await fetch(FORMSPREE_ENDPOINT,{
+      method:"POST",
+      body:new FormData(form),
+      headers:{Accept:"application/json"}
+    });
+
+    if(res.ok){
+      form.style.display="none";
+      document.getElementById("confirm").style.display="block";
+      document.getElementById("confirm").scrollIntoView({behavior:"smooth",block:"center"});
+    }else{
+      btn.disabled=false;
+      btn.textContent=old;
+      alert("حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.");
+    }
+  }catch(err){
+    btn.disabled=false;
+    btn.textContent=old;
+    alert("تعذر الاتصال بالخادم. تأكد من اتصال الإنترنت وحاول مرة أخرى.");
+  }
+  return false;
+}
+</script>
+</body>
+</html>
