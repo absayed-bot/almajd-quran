@@ -1,266 +1,321 @@
-from pathlib import Path
-from PIL import Image
-import base64, io, re
-
-html_path = Path("/mnt/data/index_almajd_updated.html")
-logo_path = Path("/mnt/data/473282946_605289685533744_8600256522420410887_n.jpg")
-
-html = html_path.read_text(encoding="utf-8")
-img = Image.open(logo_path).convert("RGBA")
-
-# Remove the white background from the uploaded logo so it blends naturally with the site.
-px = img.load()
-for y in range(img.height):
-    for x in range(img.width):
-        r, g, b, a = px[x, y]
-        # Make near-white pixels transparent, preserving the colored logo.
-        if r > 242 and g > 242 and b > 242:
-            px[x, y] = (255, 255, 255, 0)
-        elif r > 225 and g > 225 and b > 225:
-            alpha = max(0, 255 - int((r + g + b - 675) * 3))
-            px[x, y] = (r, g, b, alpha)
-
-buf = io.BytesIO()
-img.save(buf, format="PNG", optimize=True)
-logo_b64 = base64.b64encode(buf.getvalue()).decode("ascii")
-logo_data = f"data:image/png;base64,{logo_b64}"
-
-# Inject premium visual system and responsive polish.
-premium_css = r"""
-/* ===== Premium Al-Majd redesign ===== */
-:root{
-  --bg:#f6f7f3;
-  --surface:#ffffff;
-  --surface2:#f0f5f1;
-  --ink:#102522;
-  --muted:#60706b;
-  --green:#0b4a40;
-  --green2:#176d5f;
-  --green3:#2b8a73;
-  --gold:#c49a45;
-  --gold2:#ead8ad;
-  --line:#dce5df;
-  --shadow:0 20px 60px rgba(16,37,34,.10);
-  --shadow-sm:0 10px 30px rgba(16,37,34,.07);
-  --radius:24px;
-}
-body{
-  background:
-    radial-gradient(circle at 90% 0%, rgba(196,154,69,.10), transparent 25%),
-    radial-gradient(circle at 0% 35%, rgba(43,138,115,.08), transparent 28%),
-    var(--bg);
-}
-header{
-  background:rgba(246,247,243,.88);
-  border-bottom:1px solid rgba(220,229,223,.85);
-  box-shadow:0 8px 25px rgba(16,37,34,.04);
-}
-.nav{min-height:82px}
-.brand{
-  gap:12px;
-  font-size:1rem;
-}
-.brand-mark{
-  width:50px;height:50px;border-radius:15px;
-  background:#fff;
-  border:1px solid var(--gold2);
-  box-shadow:0 6px 18px rgba(16,37,34,.08);
-  padding:5px;
-}
-.brand-mark img{width:100%;height:100%;object-fit:contain}
-.hero{
-  padding:92px 0 82px;
-  background:
-    radial-gradient(circle at 82% 15%,rgba(196,154,69,.17),transparent 28%),
-    radial-gradient(circle at 10% 70%,rgba(43,138,115,.12),transparent 30%),
-    transparent;
-}
-.hero:after{
-  opacity:.16;
-  background-image:
-    linear-gradient(135deg,transparent 24%,rgba(196,154,69,.20) 25%,transparent 26%,transparent 74%,rgba(11,74,64,.12) 75%,transparent 76%);
-}
-.hero-grid{gap:58px}
-.badge{
-  background:rgba(255,255,255,.82);
-  box-shadow:var(--shadow-sm);
-  border-color:var(--gold2);
-}
-h1{
-  letter-spacing:-.02em;
-  text-shadow:0 2px 0 rgba(255,255,255,.6);
-}
-.lead{font-size:1.18rem;line-height:2;color:#53635e}
-.actions .btn{padding:14px 25px}
-.stats{gap:14px}
-.stat{
-  min-width:145px;
-  padding:15px 18px;
-  border-color:var(--line);
-  box-shadow:var(--shadow-sm);
-}
-.hero-card{
-  border:1px solid rgba(196,154,69,.28);
-  box-shadow:0 30px 80px rgba(11,74,64,.13);
-  background:linear-gradient(145deg,#fff,#fbfcfa);
-}
-.hero-card .quran{font-size:62px}
-.hero-card h2{font-size:2rem}
-.check{
-  background:var(--surface2);
-  border:1px solid #e6eee9;
-}
-section{padding:92px 0}
-.section-head{margin-bottom:42px}
-.section-head h2{letter-spacing:-.01em}
-.features{gap:20px}
-.feature,.step,.price-card{
-  border-color:var(--line);
-  box-shadow:var(--shadow-sm);
-  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
-}
-.feature:hover,.step:hover,.price-card:hover{
-  transform:translateY(-5px);
-  box-shadow:var(--shadow);
-  border-color:rgba(196,154,69,.48);
-}
-.icon{
-  background:linear-gradient(135deg,var(--green),var(--green2));
-  box-shadow:0 8px 18px rgba(11,74,64,.18);
-}
-.highlight{
-  background:
-    radial-gradient(circle at 90% 10%,rgba(196,154,69,.22),transparent 30%),
-    linear-gradient(135deg,#0b4a40,#0e5b4f);
-  box-shadow:0 25px 65px rgba(11,74,64,.16);
-}
-.pill{backdrop-filter:blur(8px)}
-.pricing{gap:22px}
-.price-card{padding:30px}
-.price-card.featured{
-  transform:translateY(-7px);
-  border-color:var(--gold);
-}
-.price-card.featured:hover{transform:translateY(-11px)}
-.price{
-  font-size:2.7rem;
-}
-.price-card li{padding:8px 0}
-#apply{
-  background:
-    radial-gradient(circle at 90% 0%,rgba(196,154,69,.18),transparent 28%),
-    linear-gradient(135deg,#0b4a40,#092f2b);
-}
-.form-box{
-  border:1px solid rgba(196,154,69,.22);
-  box-shadow:0 30px 80px rgba(0,0,0,.14);
-}
-input,select,textarea{
-  border-color:#d8e3dc;
-  background:#fbfcfa;
-  transition:.2s;
-}
-input:hover,select:hover,textarea:hover{border-color:#b9cec4}
-input:focus,select:focus,textarea:focus{
-  border-color:var(--green3);
-  box-shadow:0 0 0 4px rgba(43,138,115,.10);
-}
-.submit button{
-  box-shadow:0 10px 24px rgba(196,154,69,.25);
-}
-footer{
-  background:#082f2b;
-  border-top:1px solid rgba(196,154,69,.2);
-}
-.whatsapp{
-  box-shadow:0 12px 30px rgba(0,0,0,.22);
-}
-.logo-hero{
-  width:min(300px,78%);
-  margin:0 auto 10px;
-  display:block;
-  filter:drop-shadow(0 14px 24px rgba(11,74,64,.13));
-}
-.hero-brand-title{
-  text-align:center;
-  color:var(--green);
-  font-family:"Amiri",serif;
-  font-size:1.35rem;
-  font-weight:700;
-  margin:-2px 0 16px;
-}
-@media(max-width:900px){
-  .hero{padding:70px 0}
-  .hero-grid{gap:35px}
-  .price-card.featured{transform:none}
-  .price-card.featured:hover{transform:translateY(-5px)}
-}
-@media(max-width:640px){
-  .nav{min-height:70px}
-  .brand{font-size:.82rem}
-  .brand-mark{width:42px;height:42px}
-  .hero{padding:55px 0 50px}
-  .logo-hero{width:230px}
-  section{padding:65px 0}
-}
-"""
-
-html = html.replace("</style>", premium_css + "\n</style>", 1)
-
-# Replace textual brand mark with the actual uploaded logo.
-html = html.replace(
-    '<div class="brand"><span class="brand-mark">م</span> مكتب المجد لتحفيظ القرآن الكريم</div>',
-    '<div class="brand"><span class="brand-mark"><img src="' + logo_data + '" alt="شعار مكتب المجد"></span><span>مكتب المجد لتحفيظ القرآن الكريم</span></div>'
-)
-
-# Add the logo prominently to the hero card.
-hero_old = '<div class="hero-card">\n      <div class="quran">📖</div>'
-hero_new = '<div class="hero-card">\n      <img class="logo-hero" src="' + logo_data + '" alt="شعار مكتب المجد لتحفيظ القرآن الكريم">\n      <div class="hero-brand-title">AL-MAJD INSTITUTE</div>\n      <div class="quran">📖</div>'
-html = html.replace(hero_old, hero_new)
-
-# Add a compact trust strip before the form.
-marker = '<section id="apply">'
-trust = '''<section class="trust-strip">
-  <div class="wrap">
-    <div style="background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px 26px;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
-      <div><strong style="display:block;color:var(--green);font-size:1.2rem">📚 منهج دراسي</strong><span style="color:var(--muted);font-size:.9rem">أزهري وعام</span></div>
-      <div><strong style="display:block;color:var(--green);font-size:1.2rem">📖 حفظ كامل</strong><span style="color:var(--muted);font-size:.9rem">خطة حفظ ومراجعة</span></div>
-      <div><strong style="display:block;color:var(--green);font-size:1.2rem">🎙️ تلاوة صحيحة</strong><span style="color:var(--muted);font-size:.9rem">تدريب وتصحيح مستمر</span></div>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="مكتب المجد لتحفيظ القرآن الكريم أونلاين — المنهج الدراسي الأزهري والعام، حفظ القرآن الكريم كاملاً، والتدريب وتصحيح التلاوة، بباقات مرنة تناسب وقتك.">
+  <meta name="theme-color" content="#0b302c">
+  <title>مكتب المجد | القرآن الكريم والتعليم أونلاين</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --green:#0b302c;--green-2:#14564d;--green-3:#207568;
+      --gold:#c49a48;--gold-light:#ead9b3;--cream:#f7f5ef;
+      --paper:#fffefa;--ink:#202b27;--muted:#68736e;--line:#e7e1d4;
+      --shadow:0 22px 60px rgba(11,48,44,.11);--radius:24px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:88px}
+    body{margin:0;background:var(--cream);color:var(--ink);font-family:"Tajawal",sans-serif;line-height:1.8}
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+    .container{width:min(1160px,calc(100% - 40px));margin-inline:auto}
+    .topline{height:5px;background:linear-gradient(90deg,var(--gold),#f0dfb5,var(--green-3))}
+    header{position:sticky;top:0;z-index:100;background:rgba(255,254,250,.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(231,225,212,.9)}
+    .nav{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--green);font-weight:900}
+    .brand-logo{width:52px;height:52px;display:grid;place-items:center;flex:none}
+    .brand-logo svg{width:100%;height:100%}
+    .brand-name{font-size:1.02rem;line-height:1.35}
+    .brand-name small{display:block;color:var(--muted);font-size:.75rem;font-weight:600;margin-top:3px}
+    .nav-links{display:flex;align-items:center;gap:25px;color:#52615b;font-weight:700;font-size:.94rem}
+    .nav-links a:hover{color:var(--gold)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 23px;border-radius:999px;font-weight:800;border:1px solid transparent;transition:.22s;cursor:pointer}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(11,48,44,.13)}
+    .btn-primary{background:var(--green);color:white}
+    .btn-gold{background:var(--gold);color:white}
+    .btn-light{background:white;color:var(--green);border-color:var(--line)}
+    .hero{position:relative;overflow:hidden;padding:82px 0 78px;background:linear-gradient(115deg,#f8f5ec 0%,#f1eee3 52%,#e9f0eb 100%)}
+    .hero:before,.hero:after{content:"";position:absolute;border:1px solid rgba(196,154,72,.23);border-radius:50%;pointer-events:none}
+    .hero:before{width:520px;height:520px;top:-300px;left:-120px;box-shadow:0 0 0 35px rgba(196,154,72,.035),0 0 0 75px rgba(196,154,72,.025)}
+    .hero:after{width:360px;height:360px;bottom:-250px;right:-150px;box-shadow:0 0 0 30px rgba(32,117,104,.035),0 0 0 65px rgba(32,117,104,.025)}
+    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;padding:7px 14px;border:1px solid var(--gold-light);border-radius:999px;background:rgba(255,255,255,.7);color:var(--green-2);font-size:.88rem;font-weight:800}
+    .eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(196,154,72,.15)}
+    h1,h2,h3{font-family:"Amiri","Tajawal",serif}
+    h1{font-size:clamp(2.7rem,5.4vw,4.65rem);line-height:1.18;color:var(--green);margin:20px 0 15px;letter-spacing:-.7px}
+    h1 span{color:var(--gold)}
+    .lead{max-width:650px;color:#5e6b65;font-size:1.12rem;margin:0}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+    .trust-row{display:flex;gap:24px;flex-wrap:wrap;margin-top:34px;padding-top:22px;border-top:1px solid rgba(11,48,44,.12)}
+    .trust-item{display:flex;align-items:center;gap:9px;color:#56645d;font-size:.9rem;font-weight:700}
+    .trust-icon{width:32px;height:32px;display:grid;place-items:center;border-radius:10px;background:#fff;color:var(--gold);box-shadow:0 5px 14px rgba(11,48,44,.06)}
+    .hero-panel{position:relative;background:var(--paper);padding:32px;border:1px solid rgba(231,225,212,.9);border-radius:30px;box-shadow:var(--shadow)}
+    .panel-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+    .panel-label{color:var(--muted);font-weight:700;font-size:.88rem}
+    .panel-seal{width:54px;height:54px;border-radius:18px;background:var(--green);color:#f3dfb1;display:grid;place-items:center;font-family:"Amiri";font-size:29px}
+    .verse{font-family:"Amiri";font-size:1.65rem;line-height:1.8;text-align:center;color:var(--green);padding:15px 5px 22px;border-bottom:1px solid var(--line)}
+    .panel-points{display:grid;gap:13px;margin-top:22px}
+    .panel-point{display:flex;align-items:center;gap:12px;color:#52615b;font-weight:700}
+    .tick{width:27px;height:27px;border-radius:50%;background:#edf4ef;color:var(--green-2);display:grid;place-items:center;font-size:.85rem;flex:none}
+    section{padding:82px 0}
+    .section-heading{text-align:center;max-width:720px;margin:0 auto 42px}
+    .section-kicker{color:var(--gold);font-size:.84rem;font-weight:900;letter-spacing:.4px}
+    .section-heading h2{font-size:clamp(2rem,3.7vw,3rem);line-height:1.3;color:var(--green);margin:7px 0}
+    .section-heading p{color:var(--muted);margin:0;font-size:1.02rem}
+    .features{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .feature{padding:26px 23px;background:var(--paper);border:1px solid var(--line);border-radius:22px;transition:.22s}
+    .feature:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--gold-light)}
+    .feature-icon{width:54px;height:54px;border-radius:17px;background:#edf3ef;color:var(--green-2);display:grid;place-items:center;font-size:25px;margin-bottom:17px}
+    .feature h3{font-family:"Tajawal";font-size:1.12rem;color:var(--green);margin:0 0 7px}
+    .feature p{color:var(--muted);font-size:.93rem;margin:0}
+    .about-band{background:var(--green);color:white;border-radius:30px;padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center;overflow:hidden;position:relative}
+    .about-band:after{content:"";position:absolute;width:300px;height:300px;border:1px solid rgba(234,217,179,.16);border-radius:50%;left:-100px;bottom:-210px;box-shadow:0 0 0 30px rgba(234,217,179,.04),0 0 0 65px rgba(234,217,179,.03)}
+    .about-copy,.about-grid{position:relative;z-index:1}
+    .about-copy .section-kicker{color:#e8c982}
+    .about-copy h2{font-size:2.65rem;line-height:1.3;margin:8px 0 12px}
+    .about-copy p{color:#d9e5df;margin:0}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .about-tile{padding:17px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);border-radius:16px}
+    .about-tile strong{display:block;color:#f0d69e;margin-bottom:4px}
+    .about-tile span{font-size:.9rem;color:#e0e9e4}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .step{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:27px}
+    .step-number{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:#f4ead4;color:#916b25;font-weight:900;font-size:1.1rem}
+    .step h3{font-family:"Tajawal";font-size:1.12rem;color:var(--green);margin:15px 0 5px}
+    .step p{margin:0;color:var(--muted);font-size:.94rem}
+    .pricing-section{background:#f0eee6}
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+    .price-card{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:25px;padding:30px;display:flex;flex-direction:column}
+    .price-card.featured{border:2px solid var(--gold);box-shadow:0 18px 45px rgba(145,107,37,.12);transform:translateY(-8px)}
+    .popular{position:absolute;top:17px;left:17px;background:#f4ead4;color:#87631f;padding:5px 12px;border-radius:999px;font-size:.76rem;font-weight:900}
+    .price-card h3{font-family:"Tajawal";font-size:1.16rem;color:var(--green);margin:0 0 8px}
+    .price{font-family:"Amiri";font-size:3rem;font-weight:700;line-height:1.3;color:var(--green);margin:8px 0}
+    .price small{font-family:"Tajawal";font-size:.88rem;color:var(--muted);font-weight:600}
+    .price-desc{font-size:.9rem;color:var(--muted);margin:0 0 15px}
+    .price-card ul{list-style:none;padding:17px 0 0;margin:0 0 24px;border-top:1px solid var(--line);color:#596760}
+    .price-card li{padding:5px 0;font-size:.93rem}
+    .price-card li:before{content:"✓";color:var(--gold);font-weight:900;margin-left:9px}
+    .price-card .btn{margin-top:auto}
+    #apply{background:linear-gradient(135deg,#0b302c,#12483f);color:white}
+    #apply .section-heading h2,#apply .section-heading p{color:white}
+    #apply .section-kicker{color:#e8c982}
+    .form-shell{max-width:900px;margin:auto;background:var(--paper);color:var(--ink);border-radius:28px;padding:35px;box-shadow:0 25px 65px rgba(0,0,0,.18)}
+    .form-intro{display:flex;align-items:center;gap:13px;padding-bottom:22px;margin-bottom:24px;border-bottom:1px solid var(--line)}
+    .form-intro-icon{width:48px;height:48px;display:grid;place-items:center;background:#edf3ef;border-radius:15px;font-size:22px}
+    .form-intro strong{display:block;color:var(--green);font-size:1.05rem}
+    .form-intro span{color:var(--muted);font-size:.88rem}
+    form{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .field{display:flex;flex-direction:column;gap:7px}
+    .field.full{grid-column:1/-1}
+    label{font-weight:800;color:#34443d;font-size:.91rem}
+    input,select,textarea{width:100%;border:1px solid #dedfd6;border-radius:12px;padding:13px 14px;background:#fbfaf6;color:var(--ink);outline:none;transition:.2s}
+    input:focus,select:focus,textarea:focus{border-color:var(--green-3);box-shadow:0 0 0 4px rgba(32,117,104,.1);background:white}
+    input::placeholder,textarea::placeholder{color:#a0a8a2}
+    textarea{min-height:112px;resize:vertical}
+    .form-footer{grid-column:1/-1;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
+    .form-footer button{border:0}
+    .form-note{color:var(--muted);font-size:.83rem}
+    .confirm{display:none;text-align:center;padding:30px 10px}
+    .confirm-mark{width:68px;height:68px;display:grid;place-items:center;border-radius:50%;background:#eaf4ec;color:#28754d;font-size:32px;margin:0 auto 15px}
+    .confirm h3{font-size:1.8rem;color:var(--green);margin:0 0 6px}
+    .confirm p{color:var(--muted);margin:0 0 18px}
+    footer{background:#082722;color:#dce8e2;padding:34px 0}
+    .footer-content{display:flex;justify-content:space-between;align-items:center;gap:22px;flex-wrap:wrap}
+    .footer-brand{font-weight:900;font-size:1.02rem}
+    .footer-sub{color:#aebfb7;font-size:.85rem}
+    .footer-links{display:flex;gap:18px;flex-wrap:wrap;color:#c7d5ce;font-size:.9rem}
+    .whatsapp{position:fixed;left:22px;bottom:22px;z-index:90;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#1fa765;color:white;font-size:27px;box-shadow:0 12px 30px rgba(0,0,0,.2);transition:.2s}
+    .whatsapp:hover{transform:translateY(-4px)}
+    @media(max-width:950px){.nav-links{display:none}.hero-grid{grid-template-columns:1fr;gap:35px}.hero-panel{max-width:620px}.features{grid-template-columns:repeat(2,1fr)}.about-band{grid-template-columns:1fr}.price-card.featured{transform:none}}
+    @media(max-width:650px){
+      .container{width:min(100% - 26px,1160px)}.nav{min-height:70px}.brand-logo{width:60px;height:60px}.brand-name{font-size:.9rem}.brand-name small{font-size:.68rem}
+      .nav>.btn{padding:10px 15px;font-size:.85rem}.hero{padding:55px 0}.hero-grid{gap:28px}h1{font-size:2.55rem}.lead{font-size:1rem}
+      .hero-panel{padding:23px;border-radius:23px}.verse{font-size:1.42rem}.trust-row{gap:12px}.trust-item{font-size:.82rem}
+      section{padding:58px 0}.features,.steps,.pricing{grid-template-columns:1fr}.feature{padding:22px}
+      .about-band{padding:30px 22px;border-radius:23px}.about-copy h2{font-size:2.15rem}.about-grid{grid-template-columns:1fr 1fr}.about-tile{padding:13px}
+      .form-shell{padding:22px 16px;border-radius:22px}form{grid-template-columns:1fr}.field.full,.form-footer{grid-column:auto}
+      .form-footer{align-items:stretch}.form-footer .btn{width:100%}.whatsapp{left:15px;bottom:15px;width:54px;height:54px}
+      .footer-content{align-items:flex-start;flex-direction:column}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#" aria-label="مكتب المجد - الصفحة الرئيسية">
+        <span class="brand-logo" aria-hidden="true">
+          <img src="almajd-logo.jpg" alt="شعار معهد المجد" />
+        </span>
+        <span class="brand-name" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">مكتب المجد لتحفيظ القرآن الكريم — تعليم • حفظ • إتقان</span>
+      </a>
+      <nav class="nav-links" aria-label="التنقل الرئيسي">
+        <a href="#why">لماذا المجد؟</a><a href="#programs">برامجنا</a><a href="#steps">طريقة التسجيل</a><a href="#pricing">الباقات</a>
+      </nav>
+      <a class="btn btn-primary" href="#apply">سجّل الآن <span>←</span></a>
     </div>
-  </div>
-</section>
+  </header>
 
-'''
-html = html.replace(marker, trust + marker, 1)
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow"><i></i> التسجيل متاح الآن — تعلّم أونلاين</span>
+          <h1>خطوتك نحو القرآن تبدأ <span>من هنا</span></h1>
+          <p class="lead">احفظ كتاب الله، وأتقن تلاوتك، وتابع منهجك الدراسي مع مكتب المجد لتحفيظ القرآن الكريم. برامج تعليمية أونلاين بخيارات مرنة تساعدك على التعلّم من أي مكان وبالوقت الذي يناسبك.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#apply">ابدأ التسجيل الآن <span>←</span></a>
+            <a class="btn btn-light" href="#programs">اكتشف برامجنا</a>
+          </div>
+          <div class="trust-row">
+            <div class="trust-item"><span class="trust-icon">✦</span> 6 سنوات من العطاء</div>
+            <div class="trust-item"><span class="trust-icon">⌖</span> تعلّم من أي مكان</div>
+            <div class="trust-item"><span class="trust-icon">◷</span> أوقات مرنة</div>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="panel-top"><span class="panel-label">رحلة علم وإتقان</span><span class="panel-seal">م</span></div>
+          <div class="verse">﴿وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ﴾</div>
+          <div class="panel-points">
+            <div class="panel-point"><span class="tick">✓</span> المنهج الدراسي الأزهري والعام</div>
+            <div class="panel-point"><span class="tick">✓</span> حفظ القرآن الكريم كاملاً ومراجعته</div>
+            <div class="panel-point"><span class="tick">✓</span> التدريب وتصحيح التلاوة</div>
+            <div class="panel-point"><span class="tick">✓</span> باقات متنوعة تناسب احتياجك</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-# Improve form heading and fields slightly.
-html = html.replace(
-    '<h2>ابدأ الآن — سجّل بياناتك</h2>',
-    '<h2>ابدأ رحلتك مع مكتب المجد</h2>'
-)
-html = html.replace(
-    '<p>املأ النموذج، وسيتواصل معك فريق التسجيل لتحديد التفاصيل المناسبة لك.</p>',
-    '<p>اختر المجال والباقة المناسبة، وأرسل بياناتك وسيتواصل معك فريق المكتب لاستكمال التسجيل.</p>'
-)
-html = html.replace(
-    '<button id="submitBtn" type="submit">إرسال طلب التقديم</button>',
-    '<button id="submitBtn" type="submit">إرسال طلب التسجيل ←</button>'
-)
+    <section id="why">
+      <div class="container">
+        <div class="section-heading"><span class="section-kicker">لماذا مكتب المجد؟</span><h2>تعلّم يناسب وقتك وهدفك</h2><p>نساعدك على تنظيم رحلتك التعليمية بخطة واضحة ومتابعة مستمرة، أينما كنت.</p></div>
+        <div class="features">
+          <article class="feature"><div class="feature-icon">◷</div><h3>وقت يناسبك</h3><p>اختر المواعيد التي تتوافق مع عملك أو دراستك والتزاماتك اليومية.</p></article>
+          <article class="feature"><div class="feature-icon">◎</div><h3>خطة حسب مستواك</h3><p>نحدد نقطة البداية والهدف، ونساعدك على اختيار المسار المناسب لك.</p></article>
+          <article class="feature"><div class="feature-icon">۞</div><h3>حفظ ومراجعة وإتقان</h3><p>اهتمام بالحفظ والمراجعة والتدريب على التلاوة وتصحيح الأخطاء.</p></article>
+          <article class="feature"><div class="feature-icon">⌖</div><h3>من أي مكان</h3><p>تابع حصصك أونلاين داخل مصر أو خارجها دون التقيد بمكان محدد.</p></article>
+        </div>
+      </div>
+    </section>
 
-# Add a tiny footer logo using the same embedded asset.
-html = html.replace(
-    '<div><strong>مكتب المجد لتحفيظ القرآن الكريم</strong><div class="footer-small">نشاط التحفيظ الأونلاين</div></div>',
-    '<div style="display:flex;align-items:center;gap:12px"><img src="' + logo_data + '" alt="شعار مكتب المجد" style="width:58px;height:58px;object-fit:contain;background:#fff;border-radius:14px;padding:4px"><div><strong>مكتب المجد لتحفيظ القرآن الكريم</strong><div class="footer-small">التعليم والتحفيظ أونلاين</div></div></div>'
-)
+    <section id="programs">
+      <div class="container">
+        <div class="about-band">
+          <div class="about-copy"><span class="section-kicker">برامج المكتب</span><h2>ست سنوات في خدمة العلم وكتاب الله</h2><p>بفضل الله، يواصل مكتب المجد جهوده في التعليم والتحفيظ. ومن خلال نشاط التحفيظ الأونلاين، نسعى إلى إتاحة تجربة تعليمية مرنة تصل إلى الطلاب والطالبات في أماكن مختلفة.</p></div>
+          <div class="about-grid">
+            <div class="about-tile"><strong>المنهج الدراسي</strong><span>متابعة المنهج الأزهري والعام حسب المرحلة الدراسية.</span></div>
+            <div class="about-tile"><strong>حفظ القرآن الكريم</strong><span>خطة متدرجة للحفظ والمراجعة حتى إتمام القرآن.</span></div>
+            <div class="about-tile"><strong>تصحيح التلاوة</strong><span>تدريب عملي لتحسين القراءة وتصحيح الأخطاء.</span></div>
+            <div class="about-tile"><strong>حصص مرنة</strong><span>ثلاث مدد مختلفة لتختار ما يناسب احتياجك.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-# Responsive trust strip.
-html = html.replace(
-    '@media(max-width:640px){',
-    '@media(max-width:640px){\n  .trust-strip .wrap > div{grid-template-columns:1fr !important;gap:10px !important;}'
-)
+    <section id="steps">
+      <div class="container">
+        <div class="section-heading"><span class="section-kicker">بداية سهلة وواضحة</span><h2>كيف تبدأ رحلتك معنا؟</h2><p>ثلاث خطوات بسيطة تفصلك عن بدء رحلتك التعليمية.</p></div>
+        <div class="steps">
+          <article class="step"><div class="step-number">01</div><h3>سجّل بياناتك</h3><p>أدخل بياناتك وحدد المجال الذي ترغب في دراسته ومستواك الحالي.</p></article>
+          <article class="step"><div class="step-number">02</div><h3>اختر الباقة المناسبة</h3><p>اختر مدة الحصة التي تناسب وقتك واحتياجك: 15 أو 30 أو 60 دقيقة.</p></article>
+          <article class="step"><div class="step-number">03</div><h3>ابدأ التعلّم</h3><p>يتواصل معك فريق التسجيل لاستكمال التفاصيل وتنسيق موعد البداية.</p></article>
+        </div>
+      </div>
+    </section>
 
-out = Path("/mnt/data/index_almajd_professional.html")
-out.write_text(html, encoding="utf-8")
+    <section class="pricing-section" id="pricing">
+      <div class="container">
+        <div class="section-heading"><span class="section-kicker">باقات الحصص</span><h2>اختر الوقت المناسب لك</h2><p>أسعار واضحة ومدة مرنة، لتختار ما يتناسب مع جدولك وهدفك.</p></div>
+        <div class="pricing">
+          <article class="price-card"><h3>باقة 15 دقيقة</h3><div class="price">40 <small>جنيهًا / الحصة</small></div><p class="price-desc">حصة قصيرة ومركزة</p><ul><li>مناسبة للمراجعة والتدريب</li><li>تصحيح التلاوة والمتابعة</li><li>وقت مناسب للالتزام اليومي</li></ul><a class="btn btn-light" href="#apply" data-package="15 دقيقة - 40 جنيه">اختر هذه الباقة</a></article>
+          <article class="price-card featured"><span class="popular">اختيار مرن</span><h3>باقة 30 دقيقة</h3><div class="price">80 <small>جنيهًا / الحصة</small></div><p class="price-desc">توازن بين الوقت والإنجاز</p><ul><li>وقت مناسب للحفظ والمراجعة</li><li>تدريب وتصحيح التلاوة</li><li>متابعة المنهج الدراسي</li></ul><a class="btn btn-gold" href="#apply" data-package="30 دقيقة - 80 جنيه">اختر هذه الباقة</a></article>
+          <article class="price-card"><h3>باقة 60 دقيقة</h3><div class="price">120 <small>جنيهًا / الحصة</small></div><p class="price-desc">وقت أوسع للتعلّم والتدريب</p><ul><li>حصة متكاملة وموسعة</li><li>مناسبة للحفظ والدراسة والمراجعة</li><li>وقت أكبر للتدريب والتصحيح</li></ul><a class="btn btn-light" href="#apply" data-package="60 دقيقة - 120 جنيه">اختر هذه الباقة</a></article>
+        </div>
+      </div>
+    </section>
 
-print(f"تم إنشاء النسخة الاحترافية الجديدة:\n{out}")
-print("تم تضمين اللوجو داخل ملف HTML نفسه، لذلك لا تحتاج إلى رفع صورة اللوجو منفصلة عند نشر الصفحة.")
+    <section id="apply">
+      <div class="container">
+        <div class="section-heading"><span class="section-kicker">ابدأ الآن</span><h2>سجّل بياناتك</h2><p>املأ النموذج وسيتواصل معك فريق التسجيل لاستكمال التفاصيل وتحديد الموعد المناسب.</p></div>
+        <div class="form-shell">
+          <div class="form-intro"><div class="form-intro-icon">✎</div><div><strong>نموذج الالتحاق بمكتب المجد</strong><span>يرجى التأكد من صحة بيانات التواصل قبل الإرسال.</span></div></div>
+          <form id="applyForm">
+            <div class="field"><label for="name">الاسم بالكامل</label><input id="name" name="name" autocomplete="name" placeholder="اكتب الاسم بالكامل" required></div>
+            <div class="field"><label for="age">العمر</label><input id="age" name="age" type="number" min="4" max="90" placeholder="العمر بالسنوات" required></div>
+            <div class="field"><label for="country">الدولة / المدينة</label><input id="country" name="country" autocomplete="country-name" placeholder="مثال: القاهرة، مصر" required></div>
+            <div class="field"><label for="phone">رقم الواتساب</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="اكتب الرقم مع مفتاح الدولة" required></div>
+            <div class="field"><label for="program">المجال المطلوب</label><select id="program" name="program" required><option value="" disabled selected>اختر المجال</option><option>المنهج الدراسي الأزهري</option><option>المنهج الدراسي العام</option><option>حفظ القرآن الكريم كاملاً</option><option>التدريب وتصحيح التلاوة</option></select></div>
+            <div class="field"><label for="level">مستواك الحالي في الحفظ</label><select id="level" name="currentLevel" required><option value="" disabled selected>اختر مستواك</option><option>لا أحفظ شيئًا بعد</option><option>أحفظ أجزاء قليلة</option><option>أحفظ نصف القرآن أو أكثر</option><option>أحفظ القرآن كاملاً وأرغب في التثبيت</option></select></div>
+            <div class="field"><label for="teacher">مستوى المعلّم المطلوب</label><select id="teacher" name="teacherTier" required><option value="" disabled selected>اختر مستوى المعلّم</option><option value="متوسط الخبرة - 40 جنيه للحصة">متوسط الخبرة — 40 جنيهًا للحصة</option><option value="خبير - 70 جنيه للحصة">خبير — 70 جنيهًا للحصة</option><option value="محترف - 100 جنيه للحصة">محترف — 100 جنيه للحصة</option></select></div>
+            <div class="field"><label for="package">الباقة المطلوبة</label><select id="package" name="package" required><option value="" disabled selected>اختر الباقة</option><option value="15 دقيقة - 40 جنيه">15 دقيقة — 40 جنيهًا</option><option value="30 دقيقة - 80 جنيه">30 دقيقة — 80 جنيهًا</option><option value="60 دقيقة - 120 جنيه">60 دقيقة — 120 جنيهًا</option></select></div>
+            <div class="field full"><label for="time">الوقت المفضل للحصة</label><input id="time" name="preferredTime" placeholder="مثال: مساءً بعد صلاة العشاء" required></div>
+            <div class="field full"><label for="notes">ملاحظات إضافية <span style="font-weight:500;color:#8a958e">(اختياري)</span></label><textarea id="notes" name="notes" placeholder="أخبرنا بأي تفاصيل تساعدنا في اختيار البرنامج المناسب لك..."></textarea></div>
+            <div class="form-footer"><button class="btn btn-gold" id="submitBtn" type="submit">إرسال طلب التسجيل <span>←</span></button><span class="form-note">بياناتك تُستخدم للتواصل معك بشأن طلب التسجيل فقط.</span></div>
+          </form>
+          <div class="confirm" id="confirm" role="status" aria-live="polite"><div class="confirm-mark">✓</div><h3>تم استلام طلبك بنجاح</h3><p>شكرًا لثقتك بمكتب المجد. سيتواصل معك فريق التسجيل بعد مراجعة بياناتك.</p><button class="btn btn-primary" type="button" id="anotherRequest">إرسال طلب آخر</button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <div><div class="footer-brand">مكتب المجد لتحفيظ القرآن الكريم</div><div class="footer-sub">تعليم • حفظ • إتقان — نشاط التحفيظ الأونلاين</div></div>
+      <div class="footer-links"><a href="#why">لماذا المجد؟</a><a href="#programs">برامجنا</a><a href="#pricing">الباقات</a><a href="#apply">التسجيل</a></div>
+      <div class="footer-sub">نسأل الله القبول والتوفيق</div>
+    </div>
+  </footer>
+
+  <!-- استبدل الرقم التالي برقم واتساب المكتب بصيغة دولية دون + أو مسافات -->
+  <a class="whatsapp" href="https://wa.me/201000000000" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">◉</a>
+
+  <script>
+    const FORMSPREE_ENDPOINT = "https://formspree.io/f/meaoryqq";
+    const form = document.getElementById("applyForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const confirmBox = document.getElementById("confirm");
+
+    document.querySelectorAll("[data-package]").forEach(link => {
+      link.addEventListener("click", () => {
+        const packageSelect = document.getElementById("package");
+        packageSelect.value = link.dataset.package;
+      });
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "جارٍ إرسال الطلب...";
+      try {
+        const response = await fetch(FORMSPREE_ENDPOINT, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { "Accept": "application/json" }
+        });
+        if (!response.ok) throw new Error("Submission failed");
+        form.style.display = "none";
+        confirmBox.style.display = "block";
+        confirmBox.scrollIntoView({ behavior: "smooth", block: "center" });
+      } catch (error) {
+        alert("تعذر إرسال الطلب الآن. يرجى التأكد من اتصال الإنترنت والمحاولة مرة أخرى.");
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+
+    document.getElementById("anotherRequest").addEventListener("click", () => {
+      form.reset();
+      form.style.display = "grid";
+      confirmBox.style.display = "none";
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'إرسال طلب التسجيل <span>←</span>';
+    });
+  </script>
+</body>
+</html>
