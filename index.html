@@ -26,8 +26,6 @@
     header{position:sticky;top:0;z-index:100;background:rgba(255,254,250,.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(231,225,212,.9)}
     .nav{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:24px}
     .brand{display:flex;align-items:center;gap:12px;color:var(--green);font-weight:900}
-    .brand-logo{width:52px;height:52px;display:grid;place-items:center;flex:none}
-    .brand-logo svg{width:100%;height:100%}
     .brand-name{font-size:1.02rem;line-height:1.35}
     .brand-name small{display:block;color:var(--muted);font-size:.75rem;font-weight:600;margin-top:3px}
     .nav-links{display:flex;align-items:center;gap:25px;color:#52615b;font-weight:700;font-size:.94rem}
@@ -131,7 +129,7 @@
     .whatsapp:hover{transform:translateY(-4px)}
     @media(max-width:950px){.nav-links{display:none}.hero-grid{grid-template-columns:1fr;gap:35px}.hero-panel{max-width:620px}.features{grid-template-columns:repeat(2,1fr)}.about-band{grid-template-columns:1fr}.price-card.featured{transform:none}}
     @media(max-width:650px){
-      .container{width:min(100% - 26px,1160px)}.nav{min-height:70px}.brand-logo{width:60px;height:60px}.brand-name{font-size:.9rem}.brand-name small{font-size:.68rem}
+      .container{width:min(100% - 26px,1160px)}.nav{min-height:70px}.brand-name{font-size:.9rem}.brand-name small{font-size:.68rem}
       .nav>.btn{padding:10px 15px;font-size:.85rem}.hero{padding:55px 0}.hero-grid{gap:28px}h1{font-size:2.55rem}.lead{font-size:1rem}
       .hero-panel{padding:23px;border-radius:23px}.verse{font-size:1.42rem}.trust-row{gap:12px}.trust-item{font-size:.82rem}
       section{padding:58px 0}.features,.steps,.pricing{grid-template-columns:1fr}.feature{padding:22px}
@@ -148,10 +146,7 @@
   <header>
     <div class="container nav">
       <a class="brand" href="#" aria-label="مكتب المجد - الصفحة الرئيسية">
-        <span class="brand-logo" aria-hidden="true">
-          <img src="almajd-logo.jpg" alt="شعار معهد المجد" />
-        </span>
-        <span class="brand-name" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">مكتب المجد لتحفيظ القرآن الكريم — تعليم • حفظ • إتقان</span>
+        <span class="brand-name">مكتب المجد لتحفيظ القرآن الكريم<small>تعليم • حفظ • إتقان</small></span>
       </a>
       <nav class="nav-links" aria-label="التنقل الرئيسي">
         <a href="#why">لماذا المجد؟</a><a href="#programs">برامجنا</a><a href="#steps">طريقة التسجيل</a><a href="#pricing">الباقات</a>
@@ -232,8 +227,8 @@
         <div class="section-heading"><span class="section-kicker">باقات الحصص</span><h2>اختر الوقت المناسب لك</h2><p>أسعار واضحة ومدة مرنة، لتختار ما يتناسب مع جدولك وهدفك.</p></div>
         <div class="pricing">
           <article class="price-card"><h3>باقة 15 دقيقة</h3><div class="price">40 <small>جنيهًا / الحصة</small></div><p class="price-desc">حصة قصيرة ومركزة</p><ul><li>مناسبة للمراجعة والتدريب</li><li>تصحيح التلاوة والمتابعة</li><li>وقت مناسب للالتزام اليومي</li></ul><a class="btn btn-light" href="#apply" data-package="15 دقيقة - 40 جنيه">اختر هذه الباقة</a></article>
-          <article class="price-card featured"><span class="popular">اختيار مرن</span><h3>باقة 30 دقيقة</h3><div class="price">80 <small>جنيهًا / الحصة</small></div><p class="price-desc">توازن بين الوقت والإنجاز</p><ul><li>وقت مناسب للحفظ والمراجعة</li><li>تدريب وتصحيح التلاوة</li><li>متابعة المنهج الدراسي</li></ul><a class="btn btn-gold" href="#apply" data-package="30 دقيقة - 80 جنيه">اختر هذه الباقة</a></article>
-          <article class="price-card"><h3>باقة 60 دقيقة</h3><div class="price">120 <small>جنيهًا / الحصة</small></div><p class="price-desc">وقت أوسع للتعلّم والتدريب</p><ul><li>حصة متكاملة وموسعة</li><li>مناسبة للحفظ والدراسة والمراجعة</li><li>وقت أكبر للتدريب والتصحيح</li></ul><a class="btn btn-light" href="#apply" data-package="60 دقيقة - 120 جنيه">اختر هذه الباقة</a></article>
+          <article class="price-card featured"><span class="popular">اختيار مرن</span><h3>باقة 30 دقيقة</h3><div class="price">70 <small>جنيهًا / الحصة</small></div><p class="price-desc">توازن بين الوقت والإنجاز</p><ul><li>وقت مناسب للحفظ والمراجعة</li><li>تدريب وتصحيح التلاوة</li><li>متابعة المنهج الدراسي</li></ul><a class="btn btn-gold" href="#apply" data-package="30 دقيقة - 70 جنيه">اختر هذه الباقة</a></article>
+          <article class="price-card"><h3>باقة 60 دقيقة</h3><div class="price">130 <small>جنيهًا / الحصة</small></div><p class="price-desc">وقت أوسع للتعلّم والتدريب</p><ul><li>حصة متكاملة وموسعة</li><li>مناسبة للحفظ والدراسة والمراجعة</li><li>وقت أكبر للتدريب والتصحيح</li></ul><a class="btn btn-light" href="#apply" data-package="60 دقيقة - 130 جنيه">اختر هذه الباقة</a></article>
         </div>
       </div>
     </section>
@@ -250,8 +245,7 @@
             <div class="field"><label for="phone">رقم الواتساب</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="اكتب الرقم مع مفتاح الدولة" required></div>
             <div class="field"><label for="program">المجال المطلوب</label><select id="program" name="program" required><option value="" disabled selected>اختر المجال</option><option>المنهج الدراسي الأزهري</option><option>المنهج الدراسي العام</option><option>حفظ القرآن الكريم كاملاً</option><option>التدريب وتصحيح التلاوة</option></select></div>
             <div class="field"><label for="level">مستواك الحالي في الحفظ</label><select id="level" name="currentLevel" required><option value="" disabled selected>اختر مستواك</option><option>لا أحفظ شيئًا بعد</option><option>أحفظ أجزاء قليلة</option><option>أحفظ نصف القرآن أو أكثر</option><option>أحفظ القرآن كاملاً وأرغب في التثبيت</option></select></div>
-            <div class="field"><label for="teacher">مستوى المعلّم المطلوب</label><select id="teacher" name="teacherTier" required><option value="" disabled selected>اختر مستوى المعلّم</option><option value="متوسط الخبرة - 40 جنيه للحصة">متوسط الخبرة — 40 جنيهًا للحصة</option><option value="خبير - 70 جنيه للحصة">خبير — 70 جنيهًا للحصة</option><option value="محترف - 100 جنيه للحصة">محترف — 100 جنيه للحصة</option></select></div>
-            <div class="field"><label for="package">الباقة المطلوبة</label><select id="package" name="package" required><option value="" disabled selected>اختر الباقة</option><option value="15 دقيقة - 40 جنيه">15 دقيقة — 40 جنيهًا</option><option value="30 دقيقة - 80 جنيه">30 دقيقة — 80 جنيهًا</option><option value="60 دقيقة - 120 جنيه">60 دقيقة — 120 جنيهًا</option></select></div>
+            <div class="field"><label for="package">الباقة المطلوبة</label><select id="package" name="package" required><option value="" disabled selected>اختر الباقة</option><option value="15 دقيقة - 40 جنيه">15 دقيقة — 40 جنيهًا</option><option value="30 دقيقة - 70 جنيه">30 دقيقة — 70 جنيهًا</option><option value="60 دقيقة - 130 جنيه">60 دقيقة — 130 جنيهًا</option></select></div>
             <div class="field full"><label for="time">الوقت المفضل للحصة</label><input id="time" name="preferredTime" placeholder="مثال: مساءً بعد صلاة العشاء" required></div>
             <div class="field full"><label for="notes">ملاحظات إضافية <span style="font-weight:500;color:#8a958e">(اختياري)</span></label><textarea id="notes" name="notes" placeholder="أخبرنا بأي تفاصيل تساعدنا في اختيار البرنامج المناسب لك..."></textarea></div>
             <div class="form-footer"><button class="btn btn-gold" id="submitBtn" type="submit">إرسال طلب التسجيل <span>←</span></button><span class="form-note">بياناتك تُستخدم للتواصل معك بشأن طلب التسجيل فقط.</span></div>
